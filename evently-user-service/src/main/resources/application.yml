@@ -1,0 +1,11 @@
+spring:
+  banner:
+    location: classpath:banner.txt
+  datasource:
+    url: jdbc:postgresql://localhost:5432/evently
+    username: postgres
+    password: ""
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    databasePlatform: org.hibernate.dialect.PostgreSQLDialect
