@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -14,12 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class UserProfileDto {
 
-    private Integer id;
-    private String firstName;
-    private String lastName;
+    private String id;
+    private String name;
     private String username;
-    private Role role;
     private String city;
-    private String profileDescription;
-    private List<String> profileLinks;
+    private String pronouns;
+    private String description;
+    private Date birthdate;
+    private int friendsCount;
 }
