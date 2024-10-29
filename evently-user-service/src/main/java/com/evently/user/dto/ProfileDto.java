@@ -13,12 +13,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProfileDto {
+public class ProfileDto {
 
     private String id;
     private String name;
     private String username;
-    private String city;
     private String pronouns;
     private String description;
     private Date birthdate;

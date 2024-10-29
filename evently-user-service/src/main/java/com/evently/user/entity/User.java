@@ -50,4 +50,8 @@ public class User {
 
     @Column(name = "is_deleted", nullable = false)
     private final boolean isDeleted = false;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
 }

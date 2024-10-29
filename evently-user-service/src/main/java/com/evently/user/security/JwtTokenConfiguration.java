@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 public class JwtTokenConfiguration {
 
     /**
+     * Issuer of the JWT token.
+     */
+    private String issuer;
+
+    /**
      * Key used to sign and verify JWT tokens.
      */
     private String secretKey;

@@ -26,3 +26,4 @@ application:
     secretKey: ""
     cookieName: jwt
     lifetimeInSeconds: 3600
+

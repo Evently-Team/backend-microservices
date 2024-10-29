@@ -22,22 +22,13 @@ public class JwtTokenService {
 
     private final JwtTokenConfiguration jwtTokenConfiguration;
 
-    @Value("${application.host}")
-    private String host;
-
     /**
      * Extracts id of the user, for which the token was issued.
      * @param  token JWT token string
      * @return subject claim of the JWT token as {@link Integer}
      */
-    public int extractSubject(final String token) {
-        final String subjectClaim = extractClaim(token, Claims::getSubject);
-
-        if (subjectClaim == null) {
-            return 0;
-        }
-
-        return Integer.parseInt(subjectClaim);
+    public String extractSubject(final String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     /**
@@ -48,6 +39,10 @@ public class JwtTokenService {
     public List<? extends GrantedAuthority> extractAuthorities(final String token) {
         final String authoritiesString = extractClaim(token, claims ->
                 claims.get("aut", String.class));
+
+        if (authoritiesString == null) {
+            return List.of();
+        }
 
         return Arrays
                 .stream(authoritiesString.split(" "))
@@ -93,9 +88,9 @@ public class JwtTokenService {
         final String token = Jwts
                 .builder()
                 .audience()
-                .add(host)
+                .add(jwtTokenConfiguration.getIssuer())
                 .and()
-                .issuer(host)
+                .issuer(jwtTokenConfiguration.getIssuer())
                 .subject(String.valueOf(user.getId()))
                 .claims(extraClaims)
                 .issuedAt(issuedAt)

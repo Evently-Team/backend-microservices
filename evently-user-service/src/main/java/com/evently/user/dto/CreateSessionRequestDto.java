@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignInRequestDto {
+public class CreateSessionRequestDto {
 
     @NotBlank(message = "Username or email cannot be empty")
     @NotNull(message = "Username or email cannot be null")
