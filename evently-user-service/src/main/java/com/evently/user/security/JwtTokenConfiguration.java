@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("application.jwt-token")
+@ConfigurationProperties("jwt")
 public class JwtTokenConfiguration {
 
     /**
@@ -17,15 +17,10 @@ public class JwtTokenConfiguration {
     /**
      * Key used to sign and verify JWT tokens.
      */
-    private String secretKey;
-
-    /**
-     * Name of the cookie used to store access token.
-     */
-    private String cookieName;
+    private String secret;
 
     /**
      * Access token lifetime in seconds.
      */
-    private long lifetimeInSeconds;
+    private long ttlInSeconds;
 }

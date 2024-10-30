@@ -4,19 +4,21 @@ import com.evently.user.dto.*;
 import com.evently.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/v1/registration")
+    @PostMapping("/v1/registrations")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public RegistrationDto startRegistration(@RequestBody StartRegistrationRequestDto request) {
         return userService.startRegistration(request);
@@ -28,17 +30,19 @@ public class UserController {
     }
 
     @GetMapping("/v1/users/{id}")
-    public UserDto getUser(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getUser(@PathVariable UUID id) {
         return userService.getUserById(id);
     }
 
     @GetMapping("/v1/users/{id}/profile")
-    public ProfileDto getProfile(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ProfileDto getProfile(@PathVariable UUID id) {
         return userService.getUserProfileById(id);
     }
 
     @GetMapping("/v1/users/{id}/friends")
-    public List<UserDto> getFriends(@PathVariable String id,
+    public List<UserDto> getFriends(@PathVariable UUID id,
                                     @RequestParam int pageNumber,
                                     @RequestParam int pageSize) {
         return userService.getFriends(id, pageNumber, pageSize);
