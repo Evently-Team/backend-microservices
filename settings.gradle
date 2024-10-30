@@ -1,3 +1,4 @@
 include "evently-user-service"
+include 'evently-mail-delivery-service'
 include 'evently-common'
 
