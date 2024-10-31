@@ -14,6 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Configuration class for setting up master and slave data sources.
+ * - Read queries executed in function block with {@code @Transactional(readOnly=true)}
+ *   are routed to the slave data source, which can include multiple PostgreSQL DB nodes
+ *   using a proxy like HAPRoxy for load balancing TCP requests.
+ * - Write queries with just {@code @Transactional} are routed to the master data source.
+ */
 @Configuration
 public class MasterSlaveDataSourcesConfiguration {
 

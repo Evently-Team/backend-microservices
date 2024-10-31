@@ -9,8 +9,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
 @NoArgsConstructor
 public class ApplicationAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -19,6 +17,12 @@ public class ApplicationAuthenticationEntryPoint implements AuthenticationEntryP
     public void commence(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final AuthenticationException authException) {
-        throw new AuthenticationFailedException("JWT token is not provided, expired or invalid");
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new AuthenticationFailedException("JWT token is not provided");
+        }
+
+        throw new AuthenticationFailedException("JWT token is invalid");
     }
 }

@@ -11,16 +11,16 @@ public class ApplicationException extends RuntimeException {
 
     private final String message;
     private final HttpStatus httpStatus;
-    private final URI type;
+    private final String type;
 
-    public ApplicationException(String message, HttpStatus httpStatus, URI type) {
+    public ApplicationException(String message, HttpStatus httpStatus, String type) {
         this.message = message;
         this.httpStatus = httpStatus;
         this.type = type;
     }
 
     public ApplicationException(String message, HttpStatus httpStatus) {
-        this(message, httpStatus, URI.create("about:blank"));
+        this(message, httpStatus, "about:blank");
     }
 
     public ApplicationException(String message) {

@@ -20,7 +20,7 @@ public class JwtTokenConfiguration {
     private String secret;
 
     /**
-     * Access token lifetime in seconds.
+     * JWT token lifetime in seconds.
      */
     private long ttl;
 }

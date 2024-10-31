@@ -18,7 +18,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     public ProblemDetail handleApplicationException(ApplicationException e) {
         final ProblemDetail problemDetail = ProblemDetail
                 .forStatusAndDetail(e.getHttpStatus(), e.getMessage());
-        problemDetail.setType(URI.create(typePrefix + e.getType()));
+
+        String type = e.getType();
+
+        if (!type.equals("about:blank")) {
+            type = typePrefix + type;
+        }
+
+        problemDetail.setType(URI.create(type));
 
         return problemDetail;
     }
