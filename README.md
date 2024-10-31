@@ -4,12 +4,10 @@
 ---
 
 <p align="center">
-<img src="banner.png" width="50%">
+<img src="banner.png" width="80%">
 </p>
 
 ## Overview
-
----
 
 Evently is a platform designed to bring people together by simplifying event discovery, planning, and spontaneous meetups within a city. Users can explore public events like concerts or festivals, view private group activities for clubs or organizations, and even organize personal gatherings with friends. With an interactive city event feed, a personalized recommendation system, and a map of major events, Evently helps users connect through shared interests, discover local happenings, and make meaningful connections.
 
