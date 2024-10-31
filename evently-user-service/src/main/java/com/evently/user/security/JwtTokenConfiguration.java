@@ -22,5 +22,5 @@ public class JwtTokenConfiguration {
     /**
      * Access token lifetime in seconds.
      */
-    private long ttlInSeconds;
+    private long ttl;
 }

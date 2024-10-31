@@ -1,8 +1,12 @@
 package com.evently.user.service;
 
+import com.evently.user.dao.cache.RegistrationRepository;
+import com.evently.user.dao.persistent.CredentialRepository;
 import com.evently.user.dao.persistent.ProfileRepository;
 import com.evently.user.dao.persistent.RelationshipRepository;
 import com.evently.user.dto.*;
+import com.evently.user.entity.cache.Registration;
+import com.evently.user.entity.persistent.Credentials;
 import com.evently.user.entity.persistent.Profile;
 import com.evently.user.entity.persistent.User;
 import com.evently.user.dao.persistent.UserRepository;
@@ -15,7 +19,9 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +34,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final RelationshipRepository relationshipRepository;
+    private final CredentialRepository credentialRepository;
 
     @Mapper
     interface UserMapper {
@@ -46,6 +53,7 @@ public class UserService {
         ProfileDto toDto(Profile profile);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "user", key = "#id")
     public UserDto getUserById(UUID id) {
         return UserMapper.INSTANCE.toDto(userRepository
@@ -53,6 +61,7 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new));
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "profile", key = "#id")
     public ProfileDto getUserProfileById(UUID id) {
         final Profile profile = profileRepository
@@ -62,6 +71,7 @@ public class UserService {
         return ProfileMapper.INSTANCE.toDto(profile);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "friends", key = "#id")
     public List<UserDto> getFriends(UUID id,
                                     int pageNumber,
@@ -77,12 +87,53 @@ public class UserService {
                 .toList();
     }
 
-    public RegistrationDto startRegistration(StartRegistrationRequestDto request) {
+    private final RegistrationRepository registrationRepository;
 
-        return null;
+    @Transactional
+    public RegistrationDto startRegistration(StartRegistrationRequestDto request) {
+        final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        final String passwordFingerprint = bCryptPasswordEncoder.encode(request.getPassword());
+
+        final String verificationCode = String.format("%06d", (int)(Math.random() * 1000000));
+        final Registration registration = Registration.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .verificationCode(verificationCode)
+                .passwordFingerprint(passwordFingerprint)
+                .build();
+        registrationRepository.save(registration);
+
+        return RegistrationDto.builder()
+                .registrationId(registration.getId())
+                .build();
     }
 
-    public void createUser(CreateUserRequestDto request) {
+    @Transactional
+    public UserDto createUser(CreateUserRequestDto request) {
+        final Registration registration = registrationRepository
+                .findById(request.getRegistrationId())
+                .orElseThrow(UserNotFoundException::new);
 
+        final User user = User.builder()
+                .username(registration.getUsername())
+                .name(registration.getName())
+                .build();
+        userRepository.save(user);
+
+        final Credentials credentials = Credentials.builder()
+                .passwordFingerprint(registration.getPasswordFingerprint())
+                .user(user)
+                .build();
+        credentialRepository.save(credentials);
+
+        final Profile profile = Profile.builder()
+                .user(user)
+                .build();
+        profileRepository.save(profile);
+
+        registrationRepository.delete(registration);
+
+        return UserMapper.INSTANCE.toDto(user);
     }
 }

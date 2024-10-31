@@ -1,4 +1,4 @@
-package com.evently.user.cache;
+package com.evently.user.datasource;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -23,16 +23,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RedisConfiguration {
 
-    private final CacheConfiguration cacheConfiguration;
+    private final CacheTtlConfiguration cacheTtlConfiguration;
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         final HashMap<String, Long> ttls = new HashMap<>() {
             {
-                put("registration", cacheConfiguration.getRegistrationTtlInSeconds());
-                put("user", cacheConfiguration.getUserCacheTtlInSeconds());
-                put("profile", cacheConfiguration.getProfileCacheTtlInSeconds());
-                put("friends", cacheConfiguration.getFriendsCacheTtlInSeconds());
+                put("registration", cacheTtlConfiguration.getRegistration());
+                put("user", cacheTtlConfiguration.getUserCache());
+                put("profile", cacheTtlConfiguration.getProfileCache());
+                put("friends", cacheTtlConfiguration.getFriendsCache());
             }
         };
 

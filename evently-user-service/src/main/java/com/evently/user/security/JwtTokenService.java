@@ -82,7 +82,7 @@ public class JwtTokenService {
 
         final Date issuedAt = new Date(System.currentTimeMillis());
         final Date tokenExpiration = new Date(issuedAt.getTime()
-                + jwtTokenConfiguration.getTtlInSeconds() * 1000);
+                + jwtTokenConfiguration.getTtl() * 1000);
 
         final String token = Jwts
                 .builder()

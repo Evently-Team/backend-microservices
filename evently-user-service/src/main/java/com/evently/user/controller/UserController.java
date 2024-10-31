@@ -2,10 +2,9 @@ package com.evently.user.controller;
 
 import com.evently.user.dto.*;
 import com.evently.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +19,13 @@ public class UserController {
 
     @PostMapping("/v1/registrations")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public RegistrationDto startRegistration(@RequestBody StartRegistrationRequestDto request) {
+    public RegistrationDto startRegistration(@RequestBody @Valid StartRegistrationRequestDto request) {
         return userService.startRegistration(request);
     }
 
     @PostMapping("/v1/users")
-    public void createUser(@RequestBody CreateUserRequestDto request) {
-        userService.createUser(request);
+    public UserDto createUser(@RequestBody @Valid CreateUserRequestDto request) {
+        return userService.createUser(request);
     }
 
     @GetMapping("/v1/users/{id}")

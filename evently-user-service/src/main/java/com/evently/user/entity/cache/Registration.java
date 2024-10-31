@@ -19,6 +19,7 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    private String verificationCode;
     private String name;
     private String email;
     private String username;
