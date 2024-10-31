@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserNotFoundException extends ApplicationException {
 
     public UserNotFoundException() {
-        super("User not found", HttpStatus.NOT_FOUND);
+        super("User not found", HttpStatus.NOT_FOUND, "user-not-found");
     }
 }

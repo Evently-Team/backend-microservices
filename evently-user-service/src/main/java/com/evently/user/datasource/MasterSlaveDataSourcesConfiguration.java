@@ -67,7 +67,6 @@ public class MasterSlaveDataSourcesConfiguration {
 
         final Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.show_sql", "true");
 
         entityManagerFactory.setJpaProperties(properties);
 

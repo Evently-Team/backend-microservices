@@ -7,6 +7,6 @@ import java.net.URI;
 public class AuthenticationFailedException extends ApplicationException {
 
     public AuthenticationFailedException(String message) {
-        super(message, HttpStatus.UNAUTHORIZED, "errors/authentication-failed");
+        super(message, HttpStatus.UNAUTHORIZED, "authentication-failed");
     }
 }
