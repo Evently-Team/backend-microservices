@@ -13,8 +13,6 @@ Evently is a platform designed to bring people together by simplifying event dis
 
 ## Tecnologies Used
 
----
-
 - Java
 - Spring Boot
 - Spring Security
@@ -28,8 +26,6 @@ Evently is a platform designed to bring people together by simplifying event dis
 
 ## Architecture
 
----
-
 Evently's backend architecture is designed for high scalability, real-time responsiveness, and efficient data handling across a variety of use cases in social event management. Below are the primary architectural components:
 
 ### API Gateway
@@ -41,19 +37,18 @@ The API Gateway serves as the single entry point for all client requests, managi
 Evently is built using a microservices architecture, where each service is responsible for a specific domain, such as user management, event scheduling, recommendation engine, and notifications. This decoupling allows each service to be independently developed, scaled, and deployed, enhancing modularity and maintainability.
 Microservices in Evently's backend include:
 
-- *Gateway Service*: Responsible for request routing.
-- *User Service*: Responsible for managing user accounts, profiles and friends.
-- *Event Service*: Responsible for managing events.
-- *Event Management Service*: Responsible for helping with creating and removing events by delegating tasks such as: sending notifications to friends about new event, creating a new group chat related to the event and more.
-- *Map Service*: Responsible for validating places provided in events data and getting their names from Google Map API.
-- *Messenger Service*: Responsible for managing groups and chats.
-- *Mail Delivery Service*: Responsible for sending mail messages to users.
-- *Notification Service*: Responsible for sending notifications to users.
+- **Gateway Service**: Responsible for request routing.
+- **User Service**: Responsible for managing user accounts, profiles and friends.
+- **Event Service**: Responsible for managing events.
+- **Event Management Service**: Responsible for helping with creating and removing events by delegating tasks such as: sending notifications to friends about new event, creating a new group chat related to the event and more.
+- **Map Service**: Responsible for validating places provided in events data and getting their names from Google Map API.
+- **Messenger Service**: Responsible for managing groups and chats.
+- **Mail Delivery Service**: Responsible for sending mail messages to users.
+- **Notification Service**: Responsible for sending notifications to users.
 
 ### Communication
 
 Services within Evently communicate via a message queue, implemented with Kafka, for asynchronous, decoupled interactions. This setup enables seamless communication between services, supports real-time event notifications, and allows data pipelines to operate independently of individual service failures. For synchronous calls, services use REST or gRPC, depending on latency and protocol requirements.
-
 
 ### Data storage
 
@@ -67,7 +62,5 @@ Evently's microservices are containerized using Docker, allowing consistent, iso
 This architecture ensures that Evently can scale with user demand, provide low-latency access to both user and event data, and deliver a responsive experience to users in real-time event discovery and planning.
 
 ## Creators
-
----
 
 - Adi Salimgereyev - [Github](https://github.com/abs0luty)
