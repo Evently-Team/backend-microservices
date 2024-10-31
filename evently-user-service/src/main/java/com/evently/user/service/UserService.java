@@ -4,6 +4,7 @@ import com.evently.user.dao.cache.RegistrationRepository;
 import com.evently.user.dao.persistent.CredentialRepository;
 import com.evently.user.dao.persistent.ProfileRepository;
 import com.evently.user.dao.persistent.RelationshipRepository;
+import com.evently.user.datasource.SlaveTransactional;
 import com.evently.user.dto.*;
 import com.evently.user.entity.cache.Registration;
 import com.evently.user.entity.persistent.Credentials;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +37,7 @@ public class UserService {
     private final ProfileRepository profileRepository;
     private final RelationshipRepository relationshipRepository;
     private final CredentialRepository credentialRepository;
+    private final RegistrationRepository registrationRepository;
 
     @Mapper
     interface UserMapper {
@@ -53,7 +56,7 @@ public class UserService {
         ProfileDto toDto(Profile profile);
     }
 
-    @Transactional(readOnly = true)
+    @SlaveTransactional
     @Cacheable(value = "user", key = "#id")
     public UserDto getUserById(UUID id) {
         return UserMapper.INSTANCE.toDto(userRepository
@@ -61,7 +64,7 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new));
     }
 
-    @Transactional(readOnly = true)
+    @SlaveTransactional
     @Cacheable(value = "profile", key = "#id")
     public ProfileDto getUserProfileById(UUID id) {
         final Profile profile = profileRepository
@@ -71,7 +74,7 @@ public class UserService {
         return ProfileMapper.INSTANCE.toDto(profile);
     }
 
-    @Transactional(readOnly = true)
+    @SlaveTransactional
     @Cacheable(value = "friends", key = "#id")
     public List<UserDto> getFriends(UUID id,
                                     int pageNumber,
@@ -86,8 +89,6 @@ public class UserService {
                 .map(friend -> UserMapper.INSTANCE.toDto(friend.getFriend()))
                 .toList();
     }
-
-    private final RegistrationRepository registrationRepository;
 
     @Transactional
     public RegistrationDto startRegistration(StartRegistrationRequestDto request) {

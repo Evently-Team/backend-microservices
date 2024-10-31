@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * Configuration class for setting up master and slave data sources.
- * - Read queries executed in function block with {@code @Transactional(readOnly=true)}
+ * - Read queries executed in function block with {@code @SlaveTransactional}
  *   are routed to the slave data source, which can include multiple PostgreSQL DB nodes
  *   using a proxy like HAPRoxy for load balancing TCP requests.
  * - Write queries with just {@code @Transactional} are routed to the master data source.
@@ -38,7 +38,7 @@ public class MasterSlaveDataSourcesConfiguration {
 
     @Bean
     public DataSource routingDataSource(DataSource masterDataSource, DataSource slaveDataSource) {
-        final RoutingDataSource routingDataSource = new RoutingDataSource();
+        final MasterSlaveRoutingDataSource routingDataSource = new MasterSlaveRoutingDataSource();
 
         final Map<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put("masterDataSource", masterDataSource);
